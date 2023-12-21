@@ -1,5 +1,5 @@
 public class Card {
-
+    // wsg
     public static final String CARDS = "A23456789TJQK";
     public int cardNum; //number from 0-12
     public int cardSuit; //0 - diamonds, 1 - clubs, 2 - hearts, 3 - spades
