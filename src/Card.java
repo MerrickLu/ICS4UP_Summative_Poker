@@ -1,11 +1,11 @@
 public class Card {
 
-    public static final String CARDS = "123456789TJQK";
-    public int cardNum; //number from 1-13
+    public static final String CARDS = "A23456789TJQK";
+    public int cardNum; //number from 0-12
     public int cardSuit; //0 - diamonds, 1 - clubs, 2 - hearts, 3 - spades
 
     public Card (int num) {
-        cardNum = num%13;
+        cardNum = num/4;
         cardSuit = num%4;
     }
 
@@ -19,7 +19,7 @@ public class Card {
     }
 
     public static String numToString(int num) {
-        return String.valueOf(CARDS.charAt(num-1));
+        return String.valueOf(CARDS.charAt(num));
     }
 
     public String getCardSuit() {
@@ -57,24 +57,28 @@ public class Card {
         }
     }
 
-    public int[] CompareTo(Card c) {
-        int[] arr = new int[2];
-        //Comparing the numbers
-        if(cardNum == c.getCardNum()){
-            arr[0]=0;
-        }
-        else if(cardNum < c.getCardNum()) {
-            arr[0]=-1;
-        }
-        else if(cardNum>c.getCardNum()) {
-            arr[0]=1;
-        }
-        if(getCardSuit().equals(c.getCardSuit())) {
-            arr[1]=0;
-        }
-        else {
-            arr[1]=-1;
-        }
-        return arr;
+//    public int[] CompareTo(Card c) {
+//        int[] arr = new int[2];
+//        //Comparing the numbers
+//        if(cardNum == c.getCardNum()){
+//            arr[0]=0;
+//        }
+//        else if(cardNum < c.getCardNum()) {
+//            arr[0]=-1;
+//        }
+//        else if(cardNum>c.getCardNum()) {
+//            arr[0]=1;
+//        }
+//        if(getCardSuit().equals(c.getCardSuit())) {
+//            arr[1]=0;
+//        }
+//        else {
+//            arr[1]=-1;
+//        }
+//        return arr;
+//    }
+
+    public String toString() {
+        return (numToString(this.getCardNum()) + " of " + this.getCardSuit());
     }
 }

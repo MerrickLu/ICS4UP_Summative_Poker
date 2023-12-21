@@ -7,7 +7,10 @@ This is a common technique among coders to keep things organized (and handy when
 class Main {
     public static void main(String[] args) {
 
-        new GameFrame();
+//        new GameFrame();
+        Deck d = new Deck();
+        d.shuffle();
+        d.printDeck();
 
     }
 }
