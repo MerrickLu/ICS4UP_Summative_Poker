@@ -10,7 +10,12 @@ class Main {
 //        new GameFrame();
         Deck d = new Deck();
         d.shuffle();
-        d.printDeck();
-
+        Card[] hand = new Card[7];
+        for(int i = 0; i<hand.length; i++) {
+            hand[i] = d.deal();
+        }
+        Hand h = new Hand(hand);
+        System.out.println(h.checkHand());
+        System.out.println(h.checkHand().equals(Hand.handStrength.ROYAL_FLUSH));
     }
 }

@@ -23,13 +23,12 @@ public class Deck {
     public void shuffle() {
         List<Card> shuffled = new ArrayList<Card>(deck);
         Collections.shuffle(shuffled);
-        Queue<Card> newDeck = new ArrayDeque<Card>();
-        for(Card c : shuffled){
-            newDeck.add(c);
-        }
-        deck = newDeck;
+        deck = new ArrayDeque<Card>(shuffled);
+    }
 
-
+    //deals one card
+    public Card deal() {
+        return deck.poll();
     }
 
 }
