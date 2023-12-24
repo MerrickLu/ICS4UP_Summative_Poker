@@ -11,7 +11,7 @@ public class Card {
     }
 
     public Card (int num, int s) {
-        cardNum = num%13;
+        cardNum = num;
         cardSuit = s;
     }
 

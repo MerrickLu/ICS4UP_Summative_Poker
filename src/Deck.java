@@ -38,7 +38,7 @@ public class Deck {
             item = arr[top];
             i = top;
 
-            while(i>0 && item.getCardNum()<arr[i-1].getCardNum()) {
+            while(i>0 && item.getCardNum()>arr[i-1].getCardNum()) {
                 arr[i] = arr[i-1];
                 i--;
             }
@@ -47,4 +47,13 @@ public class Deck {
         return arr;
     }
 
+    public static ArrayList<Card> dealStraightFlush() {
+        ArrayList<Card> ret = new ArrayList<>();
+        int suit = (int) (Math.random()*4);
+        int min = (int)(Math.random()*10);
+        for(int i = 0; i<7; i++) {
+            ret.add(new Card((min+i)%13, suit));
+        }
+        return ret;
+    }
 }

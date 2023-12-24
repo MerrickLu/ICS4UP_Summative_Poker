@@ -5,6 +5,7 @@ This is a common technique among coders to keep things organized (and handy when
 */
 
 import java.awt.*;
+import java.util.ArrayList;
 
 class Main {
     public static void main(String[] args) {
@@ -12,22 +13,22 @@ class Main {
 //        new GameFrame();
         Deck d = new Deck();
         d.shuffle();
-        Card[] hand = {new Card(0,0),
-                new Card(12,0),
-                new Card(0,1),
-                new Card(0,2),
-                new Card(11,0),
-                new Card(0,3),
-                new Card(2,2)};
-        Hand h = new Hand(hand);
-        System.out.println(h);
-//        for(int i = 0; i<hand.length; i++) {
-//            hand[i] = d.deal();
-//        }
-
-        for(Card c:h.getElse()) {
-            System.out.println(c);
+        ArrayList<Card> hand = new ArrayList<Card>();
+//        hand.add(new Card(0, 0));
+//        hand.add(new Card(0, 0));
+//        hand.add(new Card(4, 1));
+//        hand.add(new Card(11, 2));
+//        hand.add(new Card(11, 3));
+//        hand.add(new Card(11, 0));
+//        hand.add(new Card(4, 0));
+        for(int i = 0; i<7; i++) {
+            hand.add(d.deal());
         }
-        System.out.println(h.strength);
+        TotalHand h = new TotalHand(hand);
+
+        System.out.println(h);
+        System.out.println(h.getBestHand());
+        System.out.println(h.getStrength());
     }
+
 }
