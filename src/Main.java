@@ -13,6 +13,22 @@ class Main {
 //        new GameFrame();
         Deck d = new Deck();
         d.shuffle();
+        PlayerHand[] players = new PlayerHand[6];
+
+        for(int i = 0; i<6; i++) {
+            players[i] = new PlayerHand(i);
+            players[i].addToHand(d.deal());
+            players[i].addToHand(d.deal());
+        }
+
+        CommunityHand comm = new CommunityHand();
+
+        comm.addToHand(d.deal());
+        comm.addToHand(d.deal());
+        comm.addToHand(d.deal());
+        comm.addToHand(d.deal());
+        comm.addToHand(d.deal());
+
         ArrayList<Card> hand = new ArrayList<Card>();
 //        hand.add(new Card(0, 0));
 //        hand.add(new Card(0, 0));

@@ -2,8 +2,8 @@ public class Card {
     // wsg
     public static final String CARDS = "A23456789TJQKA";
     public static final String[] SUITS = {"Diamonds", "Clubs", "Hearts", "Spades"};
-    public int cardNum; //number from 0-12
-    public int cardSuit; //0 - diamonds, 1 - clubs, 2 - hearts, 3 - spades
+    private int cardNum; //number from 0-12
+    private int cardSuit; //0 - diamonds, 1 - clubs, 2 - hearts, 3 - spades
 
     public Card (int num) {
         cardNum = num/4;
