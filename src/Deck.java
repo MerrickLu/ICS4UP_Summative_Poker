@@ -31,4 +31,20 @@ public class Deck {
         return deck.poll();
     }
 
+    public static Card[] Sort(Card[] arr) {
+        Card item;
+        int i;
+        for(int top = 0; top<arr.length; top++) {
+            item = arr[top];
+            i = top;
+
+            while(i>0 && item.getCardNum()<arr[i-1].getCardNum()) {
+                arr[i] = arr[i-1];
+                i--;
+            }
+            arr[i] = item;
+        }
+        return arr;
+    }
+
 }

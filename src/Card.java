@@ -1,6 +1,6 @@
 public class Card {
     // wsg
-    public static final String CARDS = "A23456789TJQK";
+    public static final String CARDS = "A23456789TJQKA";
     public static final String[] SUITS = {"Diamonds", "Clubs", "Hearts", "Spades"};
     public int cardNum; //number from 0-12
     public int cardSuit; //0 - diamonds, 1 - clubs, 2 - hearts, 3 - spades
@@ -11,7 +11,7 @@ public class Card {
     }
 
     public Card (int num, int s) {
-        cardNum = num;
+        cardNum = num%13;
         cardSuit = s;
     }
 
@@ -35,26 +35,16 @@ public class Card {
         cardSuit = i;
     }
 
-    public int[] CompareTo(Card c) {
-        int[] arr = new int[2];
-        //Comparing the numbers
-        if(cardNum == c.getCardNum()){
-            arr[0]=0;
+    public int compare(Card c) {
+        if(getCardNum()>c.getCardNum()) {
+            return 1;
         }
-        else if(cardNum < c.getCardNum()) {
-            arr[0]=-1;
+        else if(getCardNum()<c.getCardNum()) {
+            return -1;
         }
-        else if(cardNum>c.getCardNum()) {
-            arr[0]=1;
-        }
-        if(getCardSuit() == (c.getCardSuit())) {
-            arr[1]=0;
-        }
-        else {
-            arr[1]=-1;
-        }
-        return arr;
+        else return 0;
     }
+
 
     public String toString() {
         return (numToString(this.getCardNum()) + " of " + SUITS[this.getCardSuit()]);
