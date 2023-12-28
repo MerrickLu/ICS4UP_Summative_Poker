@@ -14,37 +14,13 @@ class Main {
         Deck d = new Deck();
         d.shuffle();
         PlayerHand[] players = new PlayerHand[6];
-
-        for(int i = 0; i<6; i++) {
-            players[i] = new PlayerHand(i);
-            players[i].addToHand(d.deal());
-            players[i].addToHand(d.deal());
+        PreflopRanges range = new PreflopRanges();
+        for(int[] arr: range.thirtyfive) {
+            for(int c: arr) {
+                System.out.print(c + " ");
+            }
+            System.out.println();
         }
-
-        CommunityHand comm = new CommunityHand();
-
-        comm.addToHand(d.deal());
-        comm.addToHand(d.deal());
-        comm.addToHand(d.deal());
-        comm.addToHand(d.deal());
-        comm.addToHand(d.deal());
-
-        ArrayList<Card> hand = new ArrayList<Card>();
-//        hand.add(new Card(0, 0));
-//        hand.add(new Card(0, 0));
-//        hand.add(new Card(4, 1));
-//        hand.add(new Card(11, 2));
-//        hand.add(new Card(11, 3));
-//        hand.add(new Card(11, 0));
-//        hand.add(new Card(4, 0));
-        for(int i = 0; i<7; i++) {
-            hand.add(d.deal());
-        }
-        TotalHand h = new TotalHand(hand);
-
-        System.out.println(h);
-        System.out.println(h.getBestHand());
-        System.out.println(h.getStrength());
     }
 
 }

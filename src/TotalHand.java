@@ -12,7 +12,6 @@ public class TotalHand {
         ROYAL_FLUSH, STRAIGHT_FLUSH, QUADS, FULL_HOUSE, FLUSH, STRAIGHT, TRIPS, TWO_PAIR, PAIR, HIGH_CARD
     }
 
-
     private HandStrength strength;
 
 
