@@ -1,21 +1,30 @@
 public class PreflopRanges {
 
-    public static int[][] nine = new int[13][13];
-    public static int[][] fifteen = new int[13][13];
+    public int[][] nine = new int[13][13];
+    public int[][] fifteen = new int[13][13];
 
-    public static int[][] twenty = new int[13][13];
+    public int[][] twenty = new int[13][13];
 
-    public static int[][] twentyfive = new int[13][13];
+    public int[][] twentyfive = new int[13][13];
 
-    public static int[][] thirtyfive = new int[13][13];
+    public int[][] thirtyfive = new int[13][13];
 
-    public static int[][] fifty = new int[13][13];
+    public int[][] fifty = new int[13][13];
 
     public PreflopRanges() {
-
+        populateNine();
+        populateFifteen();
+        populateTwenty();
+        populateTwentyFive();
+        populateThirtyFive();
+        populateFifty();
     }
 
-    public static void populateNine() {
+    public int[][][] getRanges() {
+        return new int[][][]{nine, fifteen, twenty, twentyfive, thirtyfive, fifty};
+    }
+
+    public void populateNine() {
         //populate nine
         //range is: 66+, AJs+, KQs, AJo+, KQo
 
@@ -30,7 +39,7 @@ public class PreflopRanges {
         plus(11,14,nine);
     }
 
-    public static void populateFifteen() {
+    public void populateFifteen() {
         //range is 22+, ATs+, KJs+, 65s+, AJo+, KJo+, QJo
         //65s+
         connectors(6,5,fifteen);
@@ -49,7 +58,7 @@ public class PreflopRanges {
         pocketPairs(2, fifteen);
     }
 
-    public static void populateTwenty() {
+    public void populateTwenty() {
         //range is 22+, ATs+, KTs+, QTs+, J9s+, T8s+, 54 suited connectors +, ATo+, KTo+, QTo+, JTo
         //JTo - //ATo+
         for(int i = 11; i<=14; i++) {
@@ -69,7 +78,7 @@ public class PreflopRanges {
         pocketPairs(2,twenty);
     }
 
-    public static void populateTwentyFive() {
+    public void populateTwentyFive() {
         // T9o
         twentyfive[9-2][10-2] = 1;
 
@@ -99,7 +108,7 @@ public class PreflopRanges {
         pocketPairs(2,twentyfive);
     }
 
-    public static void populateThirtyFive() {
+    public void populateThirtyFive() {
 
 
         //K9o+,Q9o+,J9o+,T9o
@@ -133,7 +142,7 @@ public class PreflopRanges {
 
     }
 
-    public static void populateFifty() {
+    public void populateFifty() {
         connectors(5,6,fifty);
 
         plus(2,14, fifty);
@@ -159,12 +168,12 @@ public class PreflopRanges {
     }
 
 
-    private static void pocketPairs(int min, int[][] arr) {
+    private void pocketPairs(int min, int[][] arr) {
         for(int i = min-2; i<=14-2; i++) {
             arr[i][i] = i+2>=8? 3:2;
         }
     }
-    private static void plus(int base, int min, int[][] arr) {
+    private void plus(int base, int min, int[][] arr) {
         if(base>min) {
             for (int i = min - 2; i < base - 2; i++) {
                 arr[base - 2][i] = i+2>=10? 2:1;
@@ -176,7 +185,7 @@ public class PreflopRanges {
 
     }
 
-    private static void connectors(int base, int min, int[][] arr) {
+    private void connectors(int base, int min, int[][] arr) {
         int separator = base-min;
         if(base>min) {
             for(int i = base-2; i<=14-2; i++) {

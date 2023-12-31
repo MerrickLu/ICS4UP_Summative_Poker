@@ -7,10 +7,12 @@ public class PlayerHand {
     public ArrayList<Card> hand = new ArrayList<>();
 
     public boolean isFold;
+    public boolean isAllIn;
 
 
     public PlayerHand() {
         isFold = false;
+        isAllIn = false;
         stack = 1000;
     }
 
@@ -20,6 +22,10 @@ public class PlayerHand {
 
     public int getStack() {
         return stack;
+    }
+
+    public void addToStack(int n) {
+        stack+=n;
     }
 
     public void bet(int n) {
@@ -36,5 +42,8 @@ public class PlayerHand {
 
     public void fold() {
         isFold = true;
+    }
+    public void allIn() {
+        isAllIn = true;
     }
 }

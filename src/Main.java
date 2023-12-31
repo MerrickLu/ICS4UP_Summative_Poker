@@ -40,6 +40,12 @@ class Main {
         list.add(new Card(3,2));
         TotalHand h2 = new TotalHand(list);
         System.out.println(h.getBestHand() +" " + h.compareTo(h2));
+        ArrayList<Card> c = new ArrayList<>();
+        c.add(new Card(0,0));
+        c.add(new Card(0,1));
+        PokerBot bot = new PokerBot(new PreflopRanges().getRanges()[0]);
+        bot.setHand(c);
+//        System.out.println(bot.estimateStrength(new ArrayList<Card>()));
     }
 
 }
