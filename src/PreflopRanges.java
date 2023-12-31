@@ -12,12 +12,7 @@ public class PreflopRanges {
     public static int[][] fifty = new int[13][13];
 
     public PreflopRanges() {
-        populateNine();
-        populateFifteen();
-        populateTwenty();
-        populateTwentyFive();
-        populateThirtyFive();
-        populateFifty();
+
     }
 
     public static void populateNine() {

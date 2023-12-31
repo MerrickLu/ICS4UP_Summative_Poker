@@ -9,7 +9,7 @@ public class TotalHand {
     private List<List<Card>> nums = new ArrayList<List<Card>>(14);
 
     public enum HandStrength {
-        ROYAL_FLUSH, STRAIGHT_FLUSH, QUADS, FULL_HOUSE, FLUSH, STRAIGHT, TRIPS, TWO_PAIR, PAIR, HIGH_CARD
+        HIGH_CARD, PAIR, TWO_PAIR, TRIPS, STRAIGHT, FLUSH, FULL_HOUSE, QUADS, STRAIGHT_FLUSH, ROYAL_FLUSH
     }
 
     private HandStrength strength;
@@ -140,6 +140,12 @@ public class TotalHand {
 
         while(spotsLeft>0) {
             maxLoc = 0;
+            for(int i = 0; i<nums.size(); i++) {
+                if(!invalidIdx.contains(i)) {
+                    maxLoc = i;
+                    break;
+                }
+            }
             for(int i = 0; i<nums.size(); i++){
                 if(!invalidIdx.contains(i) //checking if i is valid
                 &&nums.get(i).size()>=nums.get(maxLoc).size() //checking if freq is bigger
@@ -172,7 +178,7 @@ public class TotalHand {
             case "2111":
                 strength = HandStrength.PAIR;
                 break;
-            case "11111":
+            default:
                 strength = HandStrength.HIGH_CARD;
                 break;
         }
@@ -210,5 +216,23 @@ public class TotalHand {
 //            str+="\n";
         }
         return str;
+    }
+
+    public int compareTo(TotalHand h) {
+        ArrayList<Card> best1 = getBestHand();
+        ArrayList<Card> best2 = h.getBestHand();
+        if(getStrength().compareTo(h.getStrength())!=0) return getStrength().compareTo(h.getStrength());
+        else {
+            //just check each index until one of them is greater
+            for(int i = 0; i<best1.size(); i++) {
+                if(best1.get(i).getCardNum()>best2.get(i).getCardNum()) {
+                    return 1;
+                }
+                else if(best1.get(i).getCardNum()<best2.get(i).getCardNum()) {
+                    return -1;
+                }
+            }
+            return 0; //exact same hand
+        }
     }
 }
