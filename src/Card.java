@@ -6,8 +6,8 @@ public class Card implements Cloneable{
     private int cardSuit; //0 - diamonds, 1 - clubs, 2 - hearts, 3 - spades
 
     public Card (int num) {
-        cardNum = num/4;
-        cardSuit = num%4;
+        cardNum = num/4;//AAAA22223333 etc.
+        cardSuit = num%4;//diamonds, clubs, hearts, spades, diamonds, clubs, etc...
     }
 
     public Card (int num, int s) {
@@ -26,25 +26,6 @@ public class Card implements Cloneable{
     public static String numToString(int num) {
         return String.valueOf(CARDS.charAt(num));
     }
-
-    public void changeNum(int n) {
-        cardNum = n;
-    }
-
-    public void changeSuit(int i) {
-        cardSuit = i;
-    }
-
-    public int compare(Card c) {
-        if(getCardNum()>c.getCardNum()) {
-            return 1;
-        }
-        else if(getCardNum()<c.getCardNum()) {
-            return -1;
-        }
-        else return 0;
-    }
-
 
     public String toString() {
         return (numToString(this.getCardNum()) + " of " + SUITS[this.getCardSuit()]);

@@ -12,6 +12,7 @@ public class Game {
     public int currentPos;
     public int yourPos;
 
+    //These have to do with betting
     public boolean canCheck;
     public int toCall;
     public int minRaise;
@@ -20,7 +21,9 @@ public class Game {
     public int[] bets = new int[NUM_PLAYERS];
 
     ArrayList<Card> comm = new ArrayList<>(); //community cards
+    //Array of players
     PlayerHand[] players = {new PlayerHand(), new PlayerHand(), new PlayerHand(), new PlayerHand(), new PlayerHand(), new PlayerHand()};
+    //Array of bots (Each one has a range to play with, but after the flop they're all the same)
     PokerBot[] bots;
     public Game(int s, int b) {
         d = new Deck();
@@ -42,19 +45,26 @@ public class Game {
         System.out.println("What position (0-5)");
         yourPos = s.nextInt();
         while(true) {
+            sbPos = (sbPos+1)%NUM_PLAYERS;
             resetGame();
             preflop();
         }
     }
 
     public void preflop() {
+        resetRound();
         System.out.println("Shuffling...");
         d.shuffle();
+
         System.out.println("Dealing hands...");
         dealHands();
+
         System.out.println("Your hand is " );
         players[yourPos].printHand();
-        //print all other hands while you're at it
+        System.out.println();
+        System.out.println();
+
+        //print all other hands while you're at it, just for debugging
         for(int i = 0; i<players.length; i++) {
             System.out.print(i + "'s hand is: ");
             players[i].printHand();
@@ -62,7 +72,7 @@ public class Game {
             System.out.println();
         }
 
-        //get all bot decisions
+        //get all bot decisions. They are stored in queuees in playerhand
         for(int i = 0; i<NUM_PLAYERS; i++) {
             if(currentPos != yourPos) {
                 int idx = (int) (Math.random() * bots.length);
@@ -70,10 +80,10 @@ public class Game {
             }
             next();
         }
-        toCall = 0;
         //sb and bb bet
         raise(sb);
         raise(bb);
+        s.nextLine();
         betRound();
         //deal the flop
         System.out.println("The flop comes...");
@@ -101,6 +111,7 @@ public class Game {
         System.out.println("The turn comes...");
         comm.add(d.deal());
         printComm();
+
         collect();
         System.out.println("The pot is now: " + getPot());
         river();
@@ -133,21 +144,21 @@ public class Game {
 
     public void betRound() {//goes around the table
         int count = 0;
-        while(!canContinue() || count<NUM_PLAYERS) {
-            canCheck = bets[currentPos] == toCall; //you can check
+        while(!canContinue() || count<NUM_PLAYERS) {//while you cannot continue, or we have not made a full revolution yet
+            canCheck = bets[currentPos] == toCall; //can check
 
-            //check if the player is all in or folded, and skip their turn
+            //if the player is all in or folded, and skip their turn
             if (players[currentPos].isAllIn || players[currentPos].isFold) {
                 count++;
                 next();
                 continue;
             }
             else {
-                //check if the current turn is yours
+                //is the current turn is yours
                 if (currentPos == yourPos) {
                     int temp = currentPos;
                     actionOnYou();
-                    if (temp == currentPos) count--;
+                    if (temp == currentPos) count--;//if the currentposition has not changed, the action failed. Go again
                 } else {
                     actionOnBot();
                 }
@@ -169,7 +180,6 @@ public class Game {
                     [C] - Call
                     [F] - Fold""");
 
-        s.nextLine();
         String str = s.nextLine();
         switch(str.toUpperCase()) {
             case "R":
@@ -195,8 +205,8 @@ public class Game {
 
     public void actionOnBot() {
         PokerBot.BotAction a = new PokerBot.BotAction();
-        a = players[currentPos].getAction();
-        if(a==null) {
+        a = players[currentPos].getAction(); //peeks into the queue
+        if(a==null) {//STILL HAVEN'T DEBUGGED THIS YET (shouldn't be here but whatever)
             call();
             return;
         }
@@ -206,14 +216,14 @@ public class Game {
                 players[currentPos].nextAction();
                 break;
             case "R": //raise
-                //check the amount to raise by
+                //check the amount to raise by, if less than minRaise, then just call
                 if(a.getAmount()>minRaise) {
                     raise(a.getAmount());
                 }
                 else {
                     call();
                 }
-                players[currentPos].nextAction();
+                players[currentPos].nextAction();//go to the next action
                 break;
             case "C":
                 if(a.getAmount()<toCall) {
@@ -226,7 +236,7 @@ public class Game {
             case "A":
                 allIn();
                 break;
-            case "CA":
+            case "CA": //Call any
                 call();
                 break;
             default:
@@ -307,22 +317,25 @@ public class Game {
     }
 
     public ArrayList<Integer> getWinner() {
-        ArrayList<Integer> maxloc = new ArrayList<>();
+        ArrayList<Integer> maxloc = new ArrayList<>();//locations of the winners
         maxloc.add(0);
         TotalHand[] h = new TotalHand[players.length];
         for(int i = 0; i<players.length; i++) {
             //check if they are folded
             if(players[i].isFold) continue;
             //check the strength of each hand
+            //add the player's hand to the community cards
             comm.addAll(players[i].getHand());
+            //make this a new hand
             h[i] = new TotalHand(comm);
-            if(h[i].compareTo(h[maxloc.getFirst()])>0) {
+            if(h[i].compareTo(h[maxloc.getFirst()])>0) {//stronger hand
                 maxloc.clear();
                 maxloc.add(i);
             }
-            else if(h[i].compareTo(h[maxloc.getFirst()])>0) {
+            else if(h[i].compareTo(h[maxloc.getFirst()])>0) {//equal hands
                 maxloc.add(i);
             }
+            //remove the player's cards
             comm.removeLast();
             comm.removeLast();
         }
@@ -345,17 +358,20 @@ public class Game {
     }
 
     public void resetRound() {
+        //use this between betting rounds
         minRaise = bb;
         toCall = 0;
         currentPos = sbPos;
     }
 
     public void resetGame() {
+        //happens everytime a preflop is played
         minRaise = 0;
         toCall = 0;
         for(int i = 0; i<players.length; i++) {
             players[i].reset();
         }
+        currentPos = sbPos;
     }
 
     public int getPot() {

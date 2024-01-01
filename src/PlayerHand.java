@@ -5,7 +5,7 @@ import java.util.Queue;
 
 public class PlayerHand {
 
-    private int playerNum;
+    private int playerNum;//don't actually think we need this, can't remember why i added it
     public int stack;
     public int inPot;
     public ArrayList<Card> hand = new ArrayList<>();
@@ -19,8 +19,8 @@ public class PlayerHand {
     public PlayerHand() {
         isFold = false;
         isAllIn = false;
-        stack = 1000;
-        inPot = 0;
+        stack = 1000;//all players start with 1000 credits
+        inPot = 0;//no credits in the pot currently
     }
 
     public void assignNum(int n) {
@@ -37,7 +37,7 @@ public class PlayerHand {
 
     public void bet(int n) {
         stack-=n;
-        inPot+=n;
+        inPot+=n;//removes from stack and adds to pot
     }
 
     public void addToHand(Card c) {
@@ -58,6 +58,8 @@ public class PlayerHand {
     public void reset() {
         isFold = false;
         isAllIn = false;
+        hand.clear();//clear hand
+        resetActions();  //clear bot actions
         inPot = 0;
     }
     public void resetActions() {
@@ -68,7 +70,7 @@ public class PlayerHand {
         botAction.add(new PokerBot.BotAction(s, n));
     }
 
-    public PokerBot.BotAction getAction() {//-2 means call any, -1 means fold, 0 means call up to a certain number, 1 means bet
+    public PokerBot.BotAction getAction() {
         return botAction.peek();
     }
 

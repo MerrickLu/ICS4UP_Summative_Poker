@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TotalHand {
 
-    private List<List<Card>> nums = new ArrayList<List<Card>>(14);
+    private List<List<Card>> nums = new ArrayList<List<Card>>(14);//List of a list of all cards with the same number as the index
 
     public enum HandStrength {
         HIGH_CARD, PAIR, TWO_PAIR, TRIPS, STRAIGHT, FLUSH, FULL_HOUSE, QUADS, STRAIGHT_FLUSH, ROYAL_FLUSH
@@ -17,13 +17,12 @@ public class TotalHand {
 
     public TotalHand(ArrayList<Card> a) {
         if(a!=null) {
-            ArrayList<Card> c = (ArrayList<Card>)a.clone();
+            ArrayList<Card> c = (ArrayList<Card>)a.clone();//make a clone so it doesn't mess up anything else
             if(c!=null) {
-                c.sort((o1, o2) -> Integer.compare(o1.getCardNum(), o2.getCardNum()));
-                //Accounting for ace high and low ace high and ace low
+                c.sort((o1, o2) -> Integer.compare(o1.getCardNum(), o2.getCardNum()));//sort the hand first
+                //Accounting for ace high and low ace high and ace low (Aces added twice cuz of straights)
                 ArrayList<Card> lowAces = new ArrayList<Card>();
                 ArrayList<Card> highAces = new ArrayList<Card>();
-
                 for (Card card : c) {
                     if (card.getCardNum() == 0) {
                         lowAces.add(card);
@@ -78,7 +77,7 @@ public class TotalHand {
     public ArrayList<Card> getBiggestFlush() {
         ArrayList<Card> flush = getFlushed();
         if(flush==null) return null;
-        while(flush.size()>5) {
+        while(flush.size()>5) {//remove the smallest element until there are only 5 left
             flush.removeFirst();
         }
         if(flush.getFirst().getCardNum()==0) return null;
@@ -94,14 +93,14 @@ public class TotalHand {
         int minLoc = 0;
         int i = nums.size()-1;
         ArrayList<Card> straight = new ArrayList<>();
-        done: while(i>=0) {
-            while(i>=0 && nums.get(i).isEmpty()) {
+        done: while(i>=0) {//go through all indexes from biggest to smallest
+            while(i>=0 && nums.get(i).isEmpty()) {//if there is no card with the number 'i', reset the count.
                 i--;
                 count=0;
             }
-            while(i>=0 && !nums.get(i).isEmpty()) {
+            while(i>=0 && !nums.get(i).isEmpty()) {//if there IS a card with the number 'i', count it until 5
                 count++;
-                if(count==5) {
+                if(count==5) {//found the biggest straight
                     minLoc = i;
                     break done;
                 }
@@ -121,11 +120,11 @@ public class TotalHand {
     //gets suited straight
     public ArrayList<Card> getStraightFlush() {
         TotalHand flush = new TotalHand(getFlushed()); //make a new hand with all suited cards
-        ArrayList<Card> straightFlush = flush.getStraight();
+        ArrayList<Card> straightFlush = flush.getStraight();//gets a straight from all the suited cards
         if(straightFlush==null) return null;
 
         if(straightFlush.getFirst().getCardNum()==9) {
-            //this is a royal flush
+            //smallest card is a 10 -> royal flush
             strength = HandStrength.ROYAL_FLUSH;
         }
         else strength = HandStrength.STRAIGHT_FLUSH;
@@ -140,7 +139,7 @@ public class TotalHand {
         int maxLoc = 0;
         int spotsLeft = 5;
         ArrayList<Card> bestHand = new ArrayList<>();
-        String str = ""; //this represents the strength of the hand
+        String str = ""; //this represents the frequency of cards added. (Ex: Full house would be "32")
 
         while(spotsLeft>0) {
             maxLoc = 0;
@@ -195,7 +194,7 @@ public class TotalHand {
 
         best = getElse();
         switch(strength) {
-            case QUADS, FULL_HOUSE:
+            case QUADS, FULL_HOUSE://only straight flush and royal flush are bigger than these. Don't check anything else
                 best = getStraightFlush()==null? best:getStraightFlush();
                 break;
             default:
@@ -217,7 +216,6 @@ public class TotalHand {
             for(int j = 0; j<nums.get(i).size(); j++) {
                 str+=nums.get(i).get(j) + "\n";
             }
-//            str+="\n";
         }
         return str;
     }

@@ -49,7 +49,7 @@ class Main {
 //        bot.setHand(c);
 ////        System.out.println(bot.estimateStrength(new ArrayList<Card>()));
 
-        Game g = new Game(5,10);
+        Game g = new Game(5,10);//starts a 5/10 game
         g.startGame();
 
     }
