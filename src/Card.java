@@ -1,4 +1,4 @@
-public class Card {
+public class Card implements Cloneable{
     // wsg
     public static final String CARDS = "A23456789TJQKA";
     public static final String[] SUITS = {"Diamonds", "Clubs", "Hearts", "Spades"};
@@ -49,4 +49,9 @@ public class Card {
     public String toString() {
         return (numToString(this.getCardNum()) + " of " + SUITS[this.getCardSuit()]);
     }
+
+    public Object clone()throws CloneNotSupportedException{
+        return super.clone();
+    }
+
 }

@@ -2,56 +2,81 @@ import java.util.ArrayList;
 
 public class PokerBot {
     int[][] range;
-    ArrayList<Card> hand;
+    PlayerHand hand;
 
     public PokerBot(int[][] r) {
         range = r;
     }
 
-    public void setHand(ArrayList<Card> h) {
+    public void setHand(PlayerHand h) {
         hand = h;
     }
 
-    public String getDecision(ArrayList<Card> comm) {
-        if(estimateStrength(comm)>5) {
-            return "R3";
+    public void getDecision(Game g) {
+        g.players[g.currentPos].resetActions();
+        this.setHand(g.players[g.currentPos]);
+        if(estimateStrength(g.getComm())>3) {//very strong hand
+            hand.addAction("MR", 0);
+            hand.addAction("MR", 0);
+            hand.addAction("A", 0);
         }
-        else if(estimateStrength(comm)>3) {
-            return "R2"; //Re-Raise
+        else if(estimateStrength(g.getComm())>2) {
+            hand.addAction("MR", 0);//1 bet, then call up to a third of it's stack
+            hand.addAction("C", Math.max(g.getBB()*20, hand.getStack()/4));
         }
-        else if(estimateStrength(comm)>1) {
-            return "C"; //Call
+        else if(estimateStrength(g.getComm())>1) {
+            hand.addAction("C", hand.getStack()/10);
+            hand.addAction("F", 0);
         }
         else {
-            return "K"; //Check
+            hand.addAction("F", 0);
         }
     }
 
-    public String getDecision() {
+    public void getDecisionPreFlop(Game g) {
+        g.players[g.currentPos].resetActions();
+        this.setHand(g.players[g.currentPos]);
         int x, y;
-        if(hand.getFirst().getCardSuit()==hand.getLast().getCardSuit()) {//suited hand
-            x = Math.max(hand.getFirst().getCardNum(), hand.getLast().getCardNum());
-            y = Math.min(hand.getFirst().getCardNum(), hand.getLast().getCardNum());
+        if(hand.getHand().getFirst().getCardSuit()==hand.getHand().getLast().getCardSuit()) {//suited hand
+            x = Math.max(hand.getHand().getFirst().getCardNum(), hand.getHand().getLast().getCardNum());
+            y = Math.min(hand.getHand().getFirst().getCardNum(), hand.getHand().getLast().getCardNum());
         }
         else {
-            y = Math.max(hand.getFirst().getCardNum(), hand.getLast().getCardNum());
-            x = Math.min(hand.getFirst().getCardNum(), hand.getLast().getCardNum());
+            y = Math.max(hand.getHand().getFirst().getCardNum(), hand.getHand().getLast().getCardNum());
+            x = Math.min(hand.getHand().getFirst().getCardNum(), hand.getHand().getLast().getCardNum());
         }
+        int temp;
+        if(x==0) {
+            x = y;
+            y = 13;
+        }
+        else if(y==0) {
+            y = x;
+            x = 13;
+        }
+        x-=1;
+        y-=1;
+
         switch(range[x][y]) {
             case 3:
-                return "R2";
+                hand.addAction("R", (int)((Math.random()+2.2)*g.getBB()));
+                hand.addAction("MR", 0);//2 bets then call any
+                hand.addAction("CA", 0);
             case 2:
-                return "R1";
+                hand.addAction("R", (int)((Math.random()*0.5+2)*g.getBB()));//1 bet then call any
+                hand.addAction("C", Math.max(g.getBB()*10, hand.getStack()/10));
             case 1:
-                return "C";
+                hand.addAction("C", g.getBB()*2);
+                hand.addAction("F", 0);//fold
             default:
-                return "K";
+                hand.addAction("F", 0);
         }
     }
 
-    private int estimateStrength (ArrayList<Card> comm) {
+    private int estimateStrength (ArrayList<Card> com) {
         //deal 100 hands and estimate average strength of hand
-        comm.addAll(hand);
+        ArrayList<Card> comm = (ArrayList<Card>)com.clone();
+        comm.addAll(hand.getHand());
         int size = comm.size();
         int avg = 0;
         Deck d;
@@ -70,5 +95,24 @@ public class PokerBot {
             }
         }
         return avg/=100;
+    }
+
+    public static class BotAction {
+
+        String type;//type of action: MR for MinRaise, R for raise, A for all in, CA for call any, C for call, F for check/fold
+        int amount;
+        public BotAction(String s, int a) {
+            type = s;
+            amount = a;
+        }
+        public BotAction() {
+        }
+
+        public String getType() {
+            return type;
+        }
+        public int getAmount() {
+            return amount;
+        }
     }
 }

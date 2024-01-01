@@ -15,31 +15,35 @@ public class TotalHand {
     private HandStrength strength;
 
 
-    public TotalHand(ArrayList<Card> c) {
-        if(c!=null) {
-            c.sort((o1, o2) -> Integer.compare(o1.getCardNum(), o2.getCardNum()));
-            //Accounting for ace high and low ace high and ace low
-            ArrayList<Card> lowAces = new ArrayList<Card>();
-            ArrayList<Card> highAces = new ArrayList<Card>();
+    public TotalHand(ArrayList<Card> a) {
+        if(a!=null) {
+            ArrayList<Card> c = (ArrayList<Card>)a.clone();
+            if(c!=null) {
+                c.sort((o1, o2) -> Integer.compare(o1.getCardNum(), o2.getCardNum()));
+                //Accounting for ace high and low ace high and ace low
+                ArrayList<Card> lowAces = new ArrayList<Card>();
+                ArrayList<Card> highAces = new ArrayList<Card>();
 
-            for (Card card : c) {
-                if (card.getCardNum() == 0) {
-                    lowAces.add(card);
-                    highAces.add(new Card(13, card.getCardSuit()));
-                }
-            }
-            nums.add(lowAces);
-            for (int i = 1; i < 13; i++) {
-                ArrayList<Card> toAdd = new ArrayList<Card>();
                 for (Card card : c) {
-                    if (card.getCardNum() == i) {
-                        toAdd.add(card);
+                    if (card.getCardNum() == 0) {
+                        lowAces.add(card);
+                        highAces.add(new Card(13, card.getCardSuit()));
                     }
                 }
-                nums.add(toAdd);
+                nums.add(lowAces);
+                for (int i = 1; i < 13; i++) {
+                    ArrayList<Card> toAdd = new ArrayList<Card>();
+                    for (Card card : c) {
+                        if (card.getCardNum() == i) {
+                            toAdd.add(card);
+                        }
+                    }
+                    nums.add(toAdd);
+                }
+                nums.add(highAces);
             }
-            nums.add(highAces);
         }
+
     }
 
     //gets all suited cards if there are more than 5 of them in a suit
