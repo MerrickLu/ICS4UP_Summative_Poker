@@ -386,6 +386,8 @@ public class Game {
         return minRaise;
     }
 
+    public int getCurrentPos() { return currentPos; }
+
     public ArrayList<Card> getComm() {
         return comm;
     }

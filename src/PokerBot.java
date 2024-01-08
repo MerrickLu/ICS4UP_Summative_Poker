@@ -14,8 +14,8 @@ public class PokerBot {
 
     //gets decision based on your average hand strength in 100 hands
     public void getDecision(Game g) { //gets decision after flop
-        g.players[g.currentPos].resetActions();
-        this.setHand(g.players[g.currentPos]);
+        g.players[g.getCurrentPos()].resetActions();
+        this.setHand(g.players[g.getCurrentPos()]);
         if(estimateStrength(g.getComm())>3) {//very strong hand
             hand.addAction("MR", 0);
             hand.addAction("MR", 0);
@@ -36,8 +36,8 @@ public class PokerBot {
 
     //For decisions preflop. It is based on the range tables
     public void getDecisionPreFlop(Game g) {
-        g.players[g.currentPos].resetActions();
-        this.setHand(g.players[g.currentPos]);
+        g.players[g.getCurrentPos()].resetActions();
+        this.setHand(g.players[g.getCurrentPos()]);
         int x, y;
         if(hand.getHand().getFirst().getCardSuit()==hand.getHand().getLast().getCardSuit()) {//suited hand
             x = Math.max(hand.getHand().getFirst().getCardNum(), hand.getHand().getLast().getCardNum());
