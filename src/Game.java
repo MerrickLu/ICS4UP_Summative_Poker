@@ -5,20 +5,20 @@ public class Game {
     //has to do with table
     public static Scanner s = new Scanner(System.in);
     public static final int NUM_PLAYERS = 6;
-    public Deck d;
-    public int sb;
-    public int bb;
-    public int sbPos;
-    public int currentPos;
-    public int yourPos;
+    private Deck d;
+    private int sb;
+    private int bb;
+    private int sbPos;
+    private int currentPos;
+    private int yourPos;
 
     //These have to do with betting
-    public boolean canCheck;
-    public int toCall;
-    public int minRaise;
-    public int pot;
+    private boolean canCheck;
+    private int toCall;
+    private int minRaise;
+    private int pot;
 
-    public int[] bets = new int[NUM_PLAYERS];
+    private int[] bets = new int[NUM_PLAYERS];
 
     ArrayList<Card> comm = new ArrayList<>(); //community cards
     //Array of players

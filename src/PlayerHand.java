@@ -6,9 +6,9 @@ import java.util.Queue;
 public class PlayerHand {
 
     private int playerNum;//don't actually think we need this, can't remember why i added it
-    public int stack;
-    public int inPot;
-    public ArrayList<Card> hand = new ArrayList<>();
+    private int stack;
+    private int inPot;
+    private ArrayList<Card> hand = new ArrayList<>();
 
     public boolean isFold;
     public boolean isAllIn;

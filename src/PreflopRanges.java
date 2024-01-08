@@ -1,15 +1,15 @@
 public class PreflopRanges {
 
-    public int[][] nine = new int[13][13];
-    public int[][] fifteen = new int[13][13];
+    private int[][] nine = new int[13][13];
+    private int[][] fifteen = new int[13][13];
 
-    public int[][] twenty = new int[13][13];
+    private int[][] twenty = new int[13][13];
 
-    public int[][] twentyfive = new int[13][13];
+    private int[][] twentyfive = new int[13][13];
 
-    public int[][] thirtyfive = new int[13][13];
+    private int[][] thirtyfive = new int[13][13];
 
-    public int[][] fifty = new int[13][13];
+    private int[][] fifty = new int[13][13];
 
     public PreflopRanges() {
         populateNine();
