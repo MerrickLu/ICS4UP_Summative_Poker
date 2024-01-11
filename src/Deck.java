@@ -3,6 +3,7 @@ import java.util.*;
 
 public class Deck {
     Queue<Card> deck = new ArrayDeque<Card>();
+    public static final int SIZE = 52;
 
 
     //This makes a new deck that is completely in order

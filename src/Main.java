@@ -48,7 +48,7 @@ class Main {
 //        PokerBot bot = new PokerBot(new PreflopRanges().getRanges()[0]);
 //        bot.setHand(c);
 ////        System.out.println(bot.estimateStrength(new ArrayList<Card>()));
-
+        new GameFrame();
         Game g = new Game(5,10);//starts a 5/10 game
         g.startGame();
 

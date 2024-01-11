@@ -1,30 +1,49 @@
-/* GamePanel class acts as the main "game loop" - continuously runs the game and calls whatever needs to be called
-
-Child of JPanel because JPanel contains methods for drawing to the screen
-
-Implements KeyListener interface to listen for keyboard input
-
-Implements Runnable interface to use "threading" - let the game do two things at once
-
-*/
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+
 import javax.swing.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener{
 
     //dimensions of window
-    public static final int GAME_WIDTH = 250;
-    public static final int GAME_HEIGHT = 250;
+    public static final int GAME_WIDTH = 867;
+    public static final int GAME_HEIGHT = 500;
+    public static final Rectangle panelBounds = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-    Image image;
-    Graphics graphics;
+
     public final static String IMAGE_FOLDER_LOCATION = "images" + File.separator;
     public final static String POKER_TABLE_IMAGE = IMAGE_FOLDER_LOCATION + "poker_table.png";
 
+    private static JPanel tablePanel;
+    private static JPanel cardPanel;
+    private static JPanel buttonPanel;
+
+    private static JLabel messageLabel;
+    private static JLabel balanceLabel = new JLabel("Balance: $0.00");
+    private static JLabel timeLeftLabel = new JLabel("Time Left: 0:00");
+    private static HashMap<Integer, String> cardMap;
+    private static Deck theDeck;
+
+    public Menu menu = new Menu();
+
+    public Thread gameThread;
+    Image image;
+    Graphics graphics;
+
+
 
     public GamePanel(){
+
+        cardMap = new HashMap<Integer, String>();
+        for (int i = 1; i <= Deck.SIZE; i++) {
+            cardMap.put(i, IMAGE_FOLDER_LOCATION + i + ".png");
+        }
+
         this.setFocusable(true); //make everything in this class appear on the screen
         this.addKeyListener(this); //start listening for keyboard input
 
@@ -35,6 +54,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
             }
         });
         this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+        // make this class run at the same time as other classes
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
     //paint is a method in java.awt library that we are overriding. It is a special method - it is called automatically in the background in order to update what appears in the window. You NEVER call paint() yourself
@@ -42,14 +64,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         //we are using "double buffering here" - if we draw images directly onto the screen, it takes time and the human eye can actually notice flashes of lag as each pixel on the screen is drawn one at a time. Instead, we are going to draw images OFF the screen, then simply move the image on screen as needed.
         image = createImage(GAME_WIDTH, GAME_HEIGHT); //draw off screen
         graphics = image.getGraphics();
-        draw(graphics);//update the positions of everything on the screen
+        try {
+            draw(graphics);//update the positions of everything on the screen
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         g.drawImage(image, 0, 0, this); //move the image on the screen
 
     }
 
     //call the draw methods in each class to update positions as things move
-    public void draw(Graphics g){
-
+    public void draw(Graphics g) throws IOException, FontFormatException {
+        menu.draw(g);
     }
 
     //call the move methods in other classes to update positions
@@ -87,12 +113,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
     //if a key is pressed, we'll send it over to the PlayerBall class for processing
     public void keyPressed(KeyEvent e){
-
+        menu.keyPressed(e);
     }
 
     //if a key is released, we'll send it over to the PlayerBall class for processing
     public void keyReleased(KeyEvent e){
-
+        menu.keyReleased(e);
     }
 
     //left empty because we don't need it; must be here because it is required to be overridded by the KeyListener interface
