@@ -7,9 +7,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class Menu {
-    public static Color crimson = new Color(187, 33, 14); // custom title color
-    public static File fontFile; // custom title font
+public class Settings {
+    public static Color golden = new Color(234, 198, 114); // custom font color
     private final Image BG_IMAGE; // background image
     private final float TITLE_SIZE = GamePanel.GAME_HEIGHT/8; // font size scaled to panel size
     private final float TEXT_SIZE = GamePanel.GAME_HEIGHT/25;
@@ -18,8 +17,7 @@ public class Menu {
     private int selectedOption = 3; // start at 3 to prevent becoming negative
 
 
-    public Menu() {
-        fontFile = new File("images/PokerFont.otf"); // font path
+    public Settings() {
         BG_IMAGE = new ImageIcon("images/MenuBG.jpg").getImage(); // bg image path
         // create rectangles for each text option to detect mouse events later
         for (int i = 0; i < options.length; i++) {
@@ -37,8 +35,8 @@ public class Menu {
     public void draw(Graphics g) throws IOException, FontFormatException {
         String text;
         g.drawImage(BG_IMAGE, 0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT, null); // draw background to fit dimensions of panel
-        g.setColor(crimson);
-        drawCenteredString(g, "Chip Masters", GamePanel.panelBounds, (int) (GamePanel.GAME_HEIGHT*0.32), Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(TITLE_SIZE));
+        g.setColor(golden);
+        drawCenteredString(g, "Settings", GamePanel.panelBounds, (int) (GamePanel.GAME_HEIGHT*0.32), Font.createFont(Font.TRUETYPE_FONT, Menu.fontFile).deriveFont(TITLE_SIZE));
         g.setColor(Color.white);
 
         /*for (int i = 0; i < optionRects.length; i++) {
@@ -53,12 +51,12 @@ public class Menu {
             text = options[(int)i];
             // display currently selected option in different color
             if((int) i == selectedOption-3) {
-                g.setColor(crimson);
+                g.setColor(golden);
             } else {
                 g.setColor(Color.white);
             }
             // draw the string
-            drawCenteredString(g, text, GamePanel.panelBounds, (int) (GamePanel.GAME_HEIGHT*yCoord), Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(TEXT_SIZE));
+            drawCenteredString(g, text, GamePanel.panelBounds, (int) (GamePanel.GAME_HEIGHT*yCoord), Font.createFont(Font.TRUETYPE_FONT, Menu.fontFile).deriveFont(TEXT_SIZE));
         }
 
     }

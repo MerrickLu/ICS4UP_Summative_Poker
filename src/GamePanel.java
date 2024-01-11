@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     //dimensions of window
     public static final int GAME_WIDTH = 867;
@@ -46,13 +46,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
         this.setFocusable(true); //make everything in this class appear on the screen
         this.addKeyListener(this); //start listening for keyboard input
-
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
         //add the MousePressed method from the MouseAdapter - by doing this we can listen for mouse input. We do this differently from the KeyListener because MouseAdapter has SEVEN mandatory methods - we only need one of them, and we don't want to make 6 empty methods
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
 
-            }
-        });
         this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
         // make this class run at the same time as other classes
         gameThread = new Thread(this);
@@ -109,6 +106,38 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
                 delta--;
             }
         }
+    }
+
+    public void mouseMoved(MouseEvent e) {
+        menu.mouseMoved(e);
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        menu.mousePressed(e);
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 
     //if a key is pressed, we'll send it over to the PlayerBall class for processing
